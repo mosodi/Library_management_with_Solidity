@@ -1,7 +1,7 @@
 pragma solidity ^0.8.0;
 
 contract Library {
-  
+
   event AddBook(address recipient, unit bookId)
 
   struct Book {
@@ -26,4 +26,30 @@ book[] private booklist;
     bookToOwner[bookId] = msg.sender;
     emit AddBook(msg.sender, bookId)
   }
+  function _getBookList(bool finished) private view returns (Book[] memory){
+    Book[] memory temporary = new Book[] (bookList.length);
+    unint counter = 0;
+    for (unit i=0; i<bookList.lenght; i++){
+      if (bookToOwner[i] == msg.sender) {
+        temporary[counter] = bookList[i];
+        counter++;
+      }
+
+    }
+
+    Book[] memory result = new Book[](counter);
+    for(uint i=0; i<counter; i++){
+      result[i] = temporary[i];
+    }
+    return results;
+  }
+
+  function getFinishedBook() external view returns (Book[] memory) {
+    return _getBookList(true);
+    
+  }
+    function getUnifinishedBook() external view returns (Book[] memory) {
+      return _getBookList(false)
+
+    }
 }
